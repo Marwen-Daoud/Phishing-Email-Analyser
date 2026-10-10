@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- PRIVACY: this policy makes the browser refuse ALL network connections, fonts, images and scripts from other sites. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self' file: 'unsafe-inline'; script-src 'self' file:; img-src 'self' data:; connect-src 'none'; form-action 'none'; base-uri 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Phishing Email Analyser</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="wrap">
+<header>
+<div class="brand">
+  <div class="brand-icon">
+    <svg viewBox="0 0 64 64" width="44" height="44" aria-hidden="true">
+      <defs>
+        <linearGradient id="hdrShieldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#3b82f6"/>
+          <stop offset="50%" stop-color="#6366f1"/>
+          <stop offset="100%" stop-color="#8b5cf6"/>
+        </linearGradient>
+      </defs>
+      <path d="M 32 4 L 54 12 C 54 36 42 52 32 60 C 22 52 10 36 10 12 Z" fill="url(#hdrShieldGrad)"/>
+      <rect x="20" y="24" width="24" height="17" rx="3" fill="#ffffff" opacity="0.95"/>
+      <path d="M 20 25.5 L 32 34 L 44 25.5" fill="none" stroke="#4f46e5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="32" cy="33.5" r="9" fill="none" stroke="#22c55e" stroke-width="2.5"/>
+      <path d="M 28.5 33.5 L 31 36 L 36 30.5" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </div>
+  <div>
+    <h1>Phishing Email Analyser</h1>
+    <p class="lead">Paste a suspicious email to detect red flags, calculate risk score, and get instant safety guidance.</p>
+  </div>
+</div>
+<div class="privacy">
+  <svg class="priv-icon" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+  <span><b>Private by design.</b> Your email is analysed entirely inside this browser tab. It is never uploaded, stored, or sent to any server, AI service or analytics tool, and this page contains no tracking. You can even switch off your internet connection and it will still work.</span>
+</div>
+</header>
+<main>
+<section class="card">
+<h2>
+  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+  Email to analyse
+</h2>
+<p class="hint">Paste the message text. For better results, include the email headers (From, Reply-To, Authentication-Results) and any link or attachment details.</p>
+<textarea id="inp" spellcheck="false" placeholder="Paste the full email here…"></textarea>
+<div class="row">
+  <button class="primary" id="go">
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><path d="M11 8v6M8 11h6"></path></svg>
+    Analyse Email
+  </button>
+  <button id="up">
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+    Upload .eml file
+  </button>
+  <input type="file" id="eml" accept=".eml,.txt" hidden>
+  <button id="clr">
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+    Clear
+  </button>
+</div>
+<p class="hint" style="margin-top:18px">Or try a fictional example:</p>
+<div class="row" id="samples" style="margin-top:0"></div>
+</section>
+<section class="card" id="result" aria-live="polite"></section>
+<section class="warn">
+  <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+  <div>
+    <b>Educational triage tool only.</b> This tool looks for common warning signs. It cannot prove an email is safe or malicious, and a low score does not mean safe. <b>Never click suspicious links or open attachments to "test" them.</b> Verify anything important using the organisation's official website, app or a contact number you already know, never details from the email itself.
+  </div>
+</section>
+</main>
+<footer>All demo emails are fictional and use reserved example domains. Scoring rules are listed in plain text in the file <code>analyser.js</code> (search for <code>RULES</code>), so you can read and change them.</footer>
+</div>
+<script src="analyser.js"></script>
+<script src="samples.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
